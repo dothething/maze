@@ -8,8 +8,8 @@ PGraphics canvas;
 PImage maze;
 PImage scaryOne;
 color c=color(255,255,255); //background color as white for comparison
-float xPos=0; //always start the ball at bottom left corner
-float yPos=563;
+float xPos=0; //always start the ball at center, or start, of circle maze
+float yPos=0;
 
 
 int screenX=561; 
@@ -35,7 +35,7 @@ void draw()
   
   fill(255,0,0);  
   noStroke();
-  ellipse(xPos, yPos, 10,10); //red ball at bottom left. With serial communication, can change xPos and yPos with potentiometers
+  ellipse(xPos, yPos, 10,10); //red ball at center. With serial communication, can change xPos and yPos with potentiometers
   
   
 if (canvas.get(mouseX,mouseY)!=c) //if mouse falls within the shape, scary image appears
