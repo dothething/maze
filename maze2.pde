@@ -4,12 +4,12 @@
 PGraphics canvas;
 PImage maze;
 PImage scaryOne;
-color c=color(255,255,255); //white colour, for comparison
+color c=color(255,255,255); //background color as white for comparison
 float xPos, yPos;
 
 
 int screenX=561; 
-int screenY=563; //size of screen
+int screenY=563; //size of background and images
 
 //setup
 void setup()
@@ -34,7 +34,7 @@ void draw()
 if (canvas.get(mouseX,mouseY)!=c) //if mouse falls within the shape, scary image appears
   {
     scaryOne = loadImage("scary2.png");
-    image(scaryOne, 0, 0, screenX, screenY);
+    image(scaryOne, 0, 0, screenX, screenY); //resize scary image to fill the window
     
 
   }
