@@ -34,7 +34,7 @@ void draw()
 if (canvas.get(mouseX,mouseY)!=c) //if mouse falls within the shape, scary image appears
   {
     scaryOne = loadImage("scary2.png");
-   image(scaryOne, 0,0);
+    image(scaryOne, 0, 0, screenX, screenY);
     
 
   }
