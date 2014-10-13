@@ -14,6 +14,7 @@ Minim minim6;
 Minim minim7;
 Minim minim8;
 Minim minim9;
+Minim minim10;
 AudioPlayer player1;
 AudioPlayer player2;
 AudioPlayer player3;
@@ -23,21 +24,25 @@ AudioPlayer player6;
 AudioPlayer player7;
 AudioPlayer player8;
 AudioPlayer player9;
+AudioPlayer player10;
 
 int bpm = 0;
 float mult = 1;
 
 int score = 0;
+int kittenCount = 0;
 
 int dangerFrame = -10;
 
 //PImage k9;
 PImage doge;
 PImage maze;
+PImage ks;
+PImage ws;
 PImage[] scary = new PImage[21];
 PImage[] kitten = new PImage[11];
-int index = 0;
 
+int index = 0;
 
 float[] values = {525.0, 502.0, 70.0};
 float xPos;
@@ -126,6 +131,7 @@ void setup() {
   minim7 = new Minim(this);
   minim8 = new Minim(this);
   minim9 = new Minim(this);
+  minim10 = new Minim(this);
   player1 = minim1.loadFile("chiptune.wav");
   player1.play();
   
@@ -134,6 +140,8 @@ void setup() {
   //k9 = loadImage("k9.png");
   doge = loadImage("d.png");
   maze = loadImage("m0.png");
+  ks = loadImage("ks.png");
+  ws = loadImage("ws.png");
   for (int i=0; i<scary.length; i++) {
     scary[i] = loadImage("s" + i + ".jpg");
   }
@@ -216,17 +224,41 @@ void draw() {
   textAlign(LEFT);
   textSize(32);
   fill(0);
-  text(score, 50, 50);
+  text("SCORE: " + score, 50, 50);
   
   // Display bpm
-  textAlign(LEFT);
-  textSize(32);
+  int sw = floor(map(bpm, 0, 200, 1, 20.99));
+  fill(250,0,0);
+  stroke(250,0,0);         
+  strokeWeight(sw);         
+  smooth();   
+  bezier(width-100,50, width-20,-20, width,140, width-100,150);
+  bezier(width-100,50, width-190,-20, width-200,140, width-100,150);         
+
   fill(0);
-  text(bpm, displayWidth-300, 50);
+  textAlign(CENTER);
+  text(bpm + " BPM", 1180, 100);    
   
-  print(bpm);
-  print(",");
-  println(values[2]); 
+  // Display Kitten Values
+  imageMode(CENTER);
+  textAlign(LEFT);
+  textSize(16);
+  for (int i=0; i<kitten.length; i++) {
+    image(kitten[i], 100, 190+(50*i));
+    text(25*(i+1) + " points", 125, 200+(50*i));
+  }
+    
+  
+  // Kill Screen
+  if (score < 0) {
+    imageMode(CORNER);
+    image(ks, 0, 0);
+  }
+  
+  if (kittenCount > 173) {
+    imageMode(CORNER);
+    image(ws, 0, 0);
+  }
 }
 
 void serialEvent(Serial myPort) {

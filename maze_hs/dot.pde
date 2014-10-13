@@ -23,7 +23,11 @@ class Dot {
       imageMode(CENTER);
       image(kitten[indx], x, y);
     } else if (!alive && !counted) {
-      score+=(25*indx);
+      score+=(25*(indx+1));
+      kittenCount++;
+      player10 = minim10.loadFile("c.mp3");
+      player10.setGain(6.0);
+      player10.play();
       counted = true;
     }
   }
