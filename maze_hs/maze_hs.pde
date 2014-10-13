@@ -1,8 +1,28 @@
 import processing.serial.*;
+import ddf.minim.*;
 
 Serial myPort;
 boolean firstContact = false;
 String input;
+
+Minim minim1;
+Minim minim2;
+Minim minim3;
+Minim minim4;
+Minim minim5;
+Minim minim6;
+Minim minim7;
+Minim minim8;
+Minim minim9;
+AudioPlayer player1;
+AudioPlayer player2;
+AudioPlayer player3;
+AudioPlayer player4;
+AudioPlayer player5;
+AudioPlayer player6;
+AudioPlayer player7;
+AudioPlayer player8;
+AudioPlayer player9;
 
 int bpm = 0;
 float mult = 1;
@@ -64,12 +84,50 @@ boolean wallCheck() {
   return wallTouch;
 }
 
+void playScarySound(int i) {
+  int newIndex = floor(map(float(i), 0, scary.length-1, 0, 6.99));
+  if (newIndex == 0) {
+    player2 = minim2.loadFile("m0.mp3");
+    player2.play();
+  } else if (newIndex == 1) {
+    player3 = minim3.loadFile("m1.mp3");
+    player3.play();
+  } else if (newIndex == 2) {
+    player4 = minim4.loadFile("m2.wav");
+    player4.play();
+  } else if (newIndex == 3) {
+    player9 = minim9.loadFile("m7.wav");
+    player9.play();
+  } else if (newIndex == 4) {
+    player6 = minim6.loadFile("m4.wav");
+    player6.play();
+  } else if (newIndex == 5) {
+    player7 = minim7.loadFile("m5.wav");
+    player7.play();
+  } else if (newIndex == 6) {
+    player8 = minim8.loadFile("m6.wav");
+    player8.play();
+  }
+}
+
 void setup() {
   String portName = "/dev/tty.usbmodem1421";
   myPort = new Serial(this, portName, 9600);
   myPort.clear();
   myPort.bufferUntil('\n');
   input = null;
+  
+  minim1 = new Minim(this);
+  minim2 = new Minim(this);
+  minim3 = new Minim(this); 
+  minim4 = new Minim(this);
+  minim5 = new Minim(this);
+  minim6 = new Minim(this);
+  minim7 = new Minim(this);
+  minim8 = new Minim(this);
+  minim9 = new Minim(this);
+  player1 = minim1.loadFile("chiptune.wav");
+  player1.play();
   
   size(displayWidth, displayHeight);
   
@@ -121,6 +179,7 @@ void draw() {
     score -= 10;
     dangerFrame = frameCount;
     index = int(random(scary.length));
+    playScarySound(index);
   }
   
   float rereverser = 1;
@@ -190,7 +249,7 @@ void serialEvent(Serial myPort) {
       if (sensors.length == 3) {
         values[2] = float(sensors[2]);
         bpm = int(values[2]);
-        mult = map(values[2], 40, 120, 0, 2);
+        mult = map(values[2], 40, 160, 0, 2);
       }
     }
     myPort.write('A');
