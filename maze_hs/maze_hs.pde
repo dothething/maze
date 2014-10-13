@@ -12,6 +12,7 @@ int score = 0;
 int dangerFrame = -10;
 
 //PImage k9;
+PImage doge;
 PImage maze;
 PImage[] scary = new PImage[21];
 PImage[] kitten = new PImage[11];
@@ -73,6 +74,7 @@ void setup() {
   size(displayWidth, displayHeight);
   
   //k9 = loadImage("k9.png");
+  doge = loadImage("d.png");
   maze = loadImage("m0.png");
   for (int i=0; i<scary.length; i++) {
     scary[i] = loadImage("s" + i + ".jpg");
@@ -138,9 +140,11 @@ void draw() {
   }
   
   // Draw the player's ball
-  fill(ballColor);  
-  noStroke();
-  ellipse(xPos, yPos, 10, 10);
+  // fill(ballColor);  
+  // noStroke();
+  // ellipse(xPos, yPos, 10, 10);
+  imageMode(CENTER);
+  image(doge, xPos, yPos);
   
   // If touching wall, show scary image
   if (danger || frameCount <= dangerFrame + 10) {
