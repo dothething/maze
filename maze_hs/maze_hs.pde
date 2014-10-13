@@ -4,11 +4,20 @@ Serial myPort;
 boolean firstContact = false;
 String input;
 
+int bpm = 0;
+float mult = 1;
+
 int score = 0;
 
+int dangerFrame = -10;
+
+PImage k9;
 PImage maze;
-PImage scaryOne;
-float[] values = {525.0, 502.0};
+PImage[] scary = new PImage[21];
+int index = 0;
+
+
+float[] values = {525.0, 502.0, 70.0};
 float xPos;
 float yPos;
 float xVel;
@@ -61,8 +70,13 @@ void setup() {
   input = null;
   
   size(displayWidth, displayHeight);
+  
+  k9 = loadImage("k9.png");
   maze = loadImage("m0.png");
-  scaryOne = loadImage("scary2.png");
+  for (int i=0; i<scary.length; i++) {
+    scary[i] = loadImage("s" + i + ".jpg");
+  }
+  
   xPos = displayWidth/2;
   yPos = displayHeight-30;
   xVel = 0;
@@ -98,6 +112,9 @@ void draw() {
   float reverser = 1;
   if (danger) {
     reverser = -3;
+    score -= 10;
+    dangerFrame = frameCount;
+    index = int(random(scary.length));
   }
   
   float rereverser = 1;
@@ -111,18 +128,38 @@ void draw() {
   xPos += xVel;
   yPos += yVel;
   
+  // Draw the dots
   for (int i = 0; i < 174; i++) {
     dots[i].display();
   }
-
+  
+  // Draw the player's ball
   fill(ballColor);  
   noStroke();
-  ellipse(xPos, yPos, 10, 10); //red ball at center. With serial communication, can change xPos and yPos with potentiometers
-
-  // if (get(mouseX, mouseY) != white) {
-  //   imageMode(CENTER);
-  //   image(scaryOne, displayWidth/2, displayHeight/2, displayHeight, displayHeight);
-  // } 
+  ellipse(xPos, yPos, 10, 10);
+  
+  // If touching wall, show scary image
+  if (danger || frameCount <= dangerFrame + 10) {
+    imageMode(CENTER);
+    image(scary[index], displayWidth/2, displayHeight/2, displayWidth, displayHeight);
+  }
+  //println(score);
+  
+  // Display score
+  textAlign(LEFT);
+  textSize(32);
+  fill(0);
+  text(score, 50, 50);
+  
+  // Display bpm
+  textAlign(LEFT);
+  textSize(32);
+  fill(0);
+  text(bpm, displayWidth-300, 50);
+  
+  print(bpm);
+  print(",");
+  println(values[2]); 
 }
 
 void serialEvent(Serial myPort) {
@@ -137,24 +174,31 @@ void serialEvent(Serial myPort) {
       }
     }
     else {
-      int[] sensors = int(split(input, ',')); // maybe put brackets in front of "int"?
+      int[] sensors = int(split(input, ","));
       if (sensors.length > 1) {
         values[0] = float(sensors[0]);
         values[1] = float(sensors[1]);
       }
+      if (sensors.length == 3) {
+        values[2] = float(sensors[2]);
+        bpm = int(values[2]);
+        mult = map(values[2], 40, 120, 0, 2);
+      }
     }
     myPort.write('A');
+   
+    
     if (values[0] > 525.0) {
-      yVel = map(values[0], 525, 1023, 0, -5);
+      yVel = map(values[0], 525, 1023, 0, -3*mult);
     } else if (values[0] < 525.0) {
-      yVel = map(values[0], 0, 525, 5, 0);
+      yVel = map(values[0], 0, 525, 3*mult, 0);
     } else {
       yVel = 0;
     }
     if (values[1] > 502.0) {
-      xVel = map(values[1], 502, 1023, 0, 5);
+      xVel = map(values[1], 502, 1023, 0, 3*mult);
     } else if (values[1] < 502.0) {
-      xVel = map(values[1], 0, 502, -5, 0);
+      xVel = map(values[1], 0, 502, -3*mult, 0);
     } else {
       xVel = 0;
     }
