@@ -5,11 +5,13 @@ class Dot {
   float y;
   boolean alive;
   boolean counted;
+  int indx;
   Dot (float x_, float y_) {
     x = x_;
     y = y_;
     alive = true;
     counted = false;
+    indx = int(random(kitten.length));
   }
   void display() {
     kill();
@@ -19,9 +21,9 @@ class Dot {
       // ellipseMode(CENTER);
       // ellipse(x, y, 10, 10);
       imageMode(CENTER);
-      image(k9, x, y);
+      image(kitten[indx], x, y);
     } else if (!alive && !counted) {
-      score+=100;
+      score+=(25*indx);
       counted = true;
     }
   }

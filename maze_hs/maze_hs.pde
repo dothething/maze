@@ -11,9 +11,10 @@ int score = 0;
 
 int dangerFrame = -10;
 
-PImage k9;
+//PImage k9;
 PImage maze;
 PImage[] scary = new PImage[21];
+PImage[] kitten = new PImage[11];
 int index = 0;
 
 
@@ -71,10 +72,13 @@ void setup() {
   
   size(displayWidth, displayHeight);
   
-  k9 = loadImage("k9.png");
+  //k9 = loadImage("k9.png");
   maze = loadImage("m0.png");
   for (int i=0; i<scary.length; i++) {
     scary[i] = loadImage("s" + i + ".jpg");
+  }
+  for (int i=0; i<kitten.length; i++) {
+    kitten[i] = loadImage("k" + i + ".png");
   }
   
   xPos = displayWidth/2;
