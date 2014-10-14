@@ -133,7 +133,7 @@ void setup() {
   minim9 = new Minim(this);
   minim10 = new Minim(this);
   player1 = minim1.loadFile("chiptune.wav");
-  player1.play();
+  player1.loop();
   
   size(displayWidth, displayHeight);
   
